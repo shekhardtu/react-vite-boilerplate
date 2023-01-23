@@ -2,7 +2,7 @@ import { ContactsPage } from "./contacts.page";
 
 const Contacts = () => {
   return (
-    <div className="flex justify-center items-center mx-auto w-[80%] bg-white">
+    <div className="flex bg-white">
       <ContactsPage></ContactsPage>
     </div>
   );

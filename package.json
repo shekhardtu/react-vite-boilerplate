@@ -1,5 +1,5 @@
 {
-  "name": "vite",
+  "name": "react-vite-boilerplate",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,8 @@
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.11.5",
     "@reduxjs/toolkit": "^1.9.1",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
     "dayjs": "^1.11.7",
     "i18next": "^22.4.9",
     "i18next-browser-languagedetector": "^7.0.1",

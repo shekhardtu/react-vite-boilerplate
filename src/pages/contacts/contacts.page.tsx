@@ -2,36 +2,27 @@ import React from "react";
 import "./contacts.modules.css";
 import { Form } from "react-router-dom";
 
-const ContactsPage = () => {
-  const contact = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/g/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { getContacts, createContact } from "./contacts.methods";
 
-  function Favorite({ contact }) {
-    // yes, this is a `let` for later
-    let favorite = contact.favorite;
-    return (
-      <Form method="post">
-        <button
-          name="favorite"
-          value={favorite ? "false" : "true"}
-          aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
-        >
-          {favorite ? "★" : "☆"}
-        </button>
-      </Form>
-    );
-  }
+export async function loader() {
+  const contacts = await getContacts();
+  return { contacts };
+}
+
+export async function action() {
+  const contact = await createContact();
+  return { contact };
+}
+
+const ContactsPage = () => {
+  const { contacts }: any = useLoaderData();
 
   return (
     <div className="flex">
       <div id="sidebar">
         <h1>React Router Contacts</h1>
+
         <div>
           <form id="search-form" role="search">
             <input
@@ -44,22 +35,41 @@ const ContactsPage = () => {
             <div id="search-spinner" aria-hidden hidden={true} />
             <div className="sr-only" aria-live="polite"></div>
           </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
+          <div>
+            {/* other code */}
+            <Form method="post">
+              <button type="submit">New</button>
+            </Form>
+          </div>
         </div>
         <nav>
-          <ul>
-            <li>
-              <a href={`/contacts/1`}>Your Name</a>
-            </li>
-            <li>
-              <a href={`/contacts/2`}>Your Friend</a>
-            </li>
-          </ul>
+          {contacts.length ? (
+            <ul>
+              {contacts.map((contact: any) => (
+                <li key={contact.id}>
+                  <Link to={`/contacts/${contact.id}`}>
+                    {contact.first || contact.last ? (
+                      <>
+                        {contact.first} {contact.last}
+                      </>
+                    ) : (
+                      <i>No Name</i>
+                    )}{" "}
+                    {contact.favorite && <span>★</span>}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No contacts</i>
+            </p>
+          )}
         </nav>
       </div>
-      <div id="detail"></div>
+      <div id="detail">
+        <Outlet />
+      </div>
     </div>
   );
 };
