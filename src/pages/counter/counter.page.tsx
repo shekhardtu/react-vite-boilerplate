@@ -6,13 +6,15 @@ import {
   incrementByAmount,
   incrementAsync,
   selectCount,
+  incrementIfOdd,
 } from "./counter.slice";
 import styles from "./counter.module.css";
 
 export function CounterPage() {
   const count = useSelector(selectCount);
-  const dispatch = useDispatch();
+  const dispatch: any = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState("2");
+  const incrementValue = Number(incrementAmount) || 0;
 
   return (
     <div className="mx-auto">
@@ -42,17 +44,21 @@ export function CounterPage() {
         />
         <button
           className={styles.button}
-          onClick={() =>
-            dispatch(incrementByAmount(Number(incrementAmount) || 0))
-          }
+          onClick={() => dispatch(incrementByAmount(incrementValue))}
         >
           Add Amount
         </button>
         <button
           className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(Number(incrementAmount) || 0))}
+          onClick={() => dispatch(incrementAsync(incrementValue))}
         >
           Add Async
+        </button>
+        <button
+          className={styles.button}
+          onClick={() => dispatch(incrementIfOdd(incrementValue))}
+        >
+          Add If Odd
         </button>
       </div>
     </div>
